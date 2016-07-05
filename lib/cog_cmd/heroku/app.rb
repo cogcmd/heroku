@@ -15,7 +15,6 @@ class CogCmd::Heroku::App < Cog::Command
 
   def list
     apps = Heroku::Auth.api.get_apps.body
-
     render(apps)
   end
 
@@ -25,7 +24,6 @@ class CogCmd::Heroku::App < Cog::Command
     app_name = request.args[1]
     apps = Heroku::Auth.api.get_apps.body
     app = apps.find { |app| app["name"] == app_name }
-
     render(app)
   end
 

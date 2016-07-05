@@ -14,3 +14,17 @@ commands:
       heroku:app info <app> - Display details about an app
     rules:
       - allow
+  config:
+    executable: /Users/vanstee/Code/cogcmd/heroku/cog-command
+    description: List and modify environment variables for an app
+    documentation: |
+      heroku:config [--app app]
+      heroku:config list [--app app] - List all environment variables
+      heroku:config set <name=value> [--app app] - Set an environment variable
+      heroku:config unset <name> [--app app] - Unset an environment variable
+    rules:
+      - allow
+    options:
+      app:
+        type: string
+        required: true
