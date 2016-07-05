@@ -1,0 +1,16 @@
+---
+cog_bundle_version: 3
+
+name: heroku
+version: 0.0.1
+description: Interact with heroku
+commands:
+  app:
+    executable: /Users/vanstee/Code/cogcmd/heroku/cog-command
+    description: List and display info about apps
+    documentation: |
+      heroku:app
+      heroku:app list - List all apps
+      heroku:app info <app> - Display details about an app
+    rules:
+      - allow
