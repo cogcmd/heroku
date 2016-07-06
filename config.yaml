@@ -70,3 +70,51 @@ commands:
       app:
         type: string
         required: true
+templates:
+  app_list:
+    slack: "{{name}} - {{owner_email}}"
+    hipchat: "{{name}} - {{owner_email}}"
+  app_info:
+    slack: |
+      Dynos: {{dynos}}
+      Git URL: {{git_url}}
+      Owner: {{owner_email}}
+      Region: {{region}}
+      Repo Size: {{repo_size}}
+      Slug Size: {{slug_size}}
+      Stack: {{stack}}
+      Web URL: {{web_url}}
+    hipchat: |
+      Dynos: {{dynos}}
+      Git URL: {{git_url}}
+      Owner: {{owner_email}}
+      Region: {{region}}
+      Repo Size: {{repo_size}}
+      Slug Size: {{slug_size}}
+      Stack: {{stack}}
+      Web URL: {{web_url}}
+  config_list:
+    slack: "{{key}}={{value}}"
+    hipchat: "{{key}}={{value}}"
+  ps_list:
+    slack: "{{process}}: {{command}} ({{pretty_state}})"
+    hipchat: "{{process}}: {{command}} ({{pretty_state}})"
+  release_list:
+    slack: "{{name}} - {{descr}}"
+    hipchat: "{{name}} - {{descr}}"
+  release_info:
+    slack: |
+      Name: {{name}}
+      Description: {{descr}}
+      Released By: {{user}}
+      Released At: {{created_at}}
+      Commit: {{commit}}
+    hipchat: |
+      Name: {{name}}
+      Description: {{descr}}
+      Released By: {{user}}
+      Released At: {{created_at}}
+      Commit: {{commit}}
+  user_list: 
+    slack: "{{email}} - {{role}}"
+    hipchat: "{{email}} - {{role}}"

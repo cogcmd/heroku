@@ -18,7 +18,7 @@ class CogCmd::Heroku::Ps < Cog::Command
 
   def list
     ps = Heroku::Auth.api.get_ps(app).body
-    write_json(ps)
+    write_json(ps, "ps_list")
   end
 
   # TODO: Support formation. See heroku CLI for example.

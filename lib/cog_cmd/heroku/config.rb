@@ -19,7 +19,7 @@ class CogCmd::Heroku::Config < Cog::Command
   def list
     config = Heroku::Auth.api.get_config_vars(app).body
     config = config.map { |key, value| {key: key, value: value} }
-    write_json(config)
+    write_json(config, "config_list")
   end
 
   def set

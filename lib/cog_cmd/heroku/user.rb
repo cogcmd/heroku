@@ -18,7 +18,8 @@ class CogCmd::Heroku::User < Cog::Command
 
   def list
     users = Heroku::Auth.api.get_collaborators(app).body
-    write_json(users)
+    users = users.map { |user| ensure_role(user) }
+    write_json(users, "user_list")
   end
 
   def add
@@ -35,5 +36,13 @@ class CogCmd::Heroku::User < Cog::Command
 
   def email
     request.args[1]
+  end
+
+  def ensure_role(user)
+    if user["role"]
+      user
+    else
+      user.merge({"role" => "collaborator"})
+    end
   end
 end

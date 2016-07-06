@@ -18,12 +18,13 @@ class CogCmd::Heroku::Release < Cog::Command
 
   def list
     releases = Heroku::Auth.api.get_releases(app).body
-    write_json(releases)
+    releases = releases.sort_by { |release| release["created_at"] }.reverse
+    write_json(releases, "release_list")
   end
 
   def info
     release = Heroku::Auth.api.get_release(app, release_version).body
-    write_json(release)
+    write_json(release, "release_info")
   end
 
   def rollback
