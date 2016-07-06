@@ -91,9 +91,9 @@ EMAIL                ROLE
 patrick@operable.io  collaborator
 mark@operable.io     owner
 
-@vanstee: !heroku:user add matt@operable.io --app flywheel-prod
+@vanstee: !heroku:user add "matt@operable.io" --app flywheel-prod
 Added matt@operable.io as a contributor
 
-@vanstee: !heroku:user remove matt@operable.io --app flywheel-prod
+@vanstee: !heroku:user remove "matt@operable.io" --app flywheel-prod
 Removed matt@operable.io as a contributor
 ```

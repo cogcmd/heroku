@@ -56,3 +56,17 @@ commands:
       app:
         type: string
         required: true
+  user:
+    executable: /Users/vanstee/Code/cogcmd/heroku/cog-command
+    description: List and rollback to older releases
+    documentation: |
+      heroku:user
+      heroku:user list [--app app] - List all users
+      heroku:user add [--app app] - Add user by email
+      heroku:user remove [--app app] - Remove user by email
+    rules:
+      - allow
+    options:
+      app:
+        type: string
+        required: true
