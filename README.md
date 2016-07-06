@@ -66,7 +66,7 @@ DATABASE_URL:    postgres://admin:password@localhost:5432/flywheel_prod
 NAME   COMMAND             STATUS  STARTED AT
 web.1  mix phoenix.server  idle    2016/06/27 21:31:37
 
-@vanstee: !heroku:ps scale web=2 --app flywheel-prod
+@vanstee: !heroku:ps scale "web=2" --app flywheel-prod
 @cog: Scaled web process to 2 dynos
 
 @vanstee: !heroku:ps restart web.1 --app flywheel-prod

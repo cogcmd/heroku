@@ -42,3 +42,17 @@ commands:
       app:
         type: string
         required: true
+  release:
+    executable: /Users/vanstee/Code/cogcmd/heroku/cog-command
+    description: List and rollback to older releases
+    documentation: |
+      heroku:release
+      heroku:release list [--app app] - List all releases
+      heroku:release info [--app app] - Display details about a release
+      heroku:release rollback [--app app] - Rollback the app to a previous release
+    rules:
+      - allow
+    options:
+      app:
+        type: string
+        required: true
