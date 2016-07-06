@@ -17,7 +17,7 @@ class CogCmd::Heroku::Ps < Cog::Command
   end
 
   def list
-    ps = Heroku::Auth.api.get_ps(app).body
+    ps = heroku.get_ps(app).body
     write_json(ps, "ps_list")
   end
 
@@ -26,7 +26,7 @@ class CogCmd::Heroku::Ps < Cog::Command
   def scale
     ps = ps_scale_pairs.map do |ps|
       type, qty = ps.split("=", 2)
-      Heroku::Auth.api.post_ps_scale(app, type, qty)
+      heroku.post_ps_scale(app, type, qty)
       "Scaled process type \"#{type}\" to #{qty} processes"
     end
 
@@ -35,10 +35,10 @@ class CogCmd::Heroku::Ps < Cog::Command
 
   def restart
     if ps
-      Heroku::Auth.api.post_ps_restart(app, {ps: ps})
+      heroku.post_ps_restart(app, {ps: ps})
       write_string("Restarted process \"#{ps}\"")
     else
-      Heroku::Auth.api.post_ps_restart(app, {})
+      heroku.post_ps_restart(app, {})
       write_string("Restarted all processes")
     end
   end

@@ -17,18 +17,18 @@ class CogCmd::Heroku::User < Cog::Command
   end
 
   def list
-    users = Heroku::Auth.api.get_collaborators(app).body
+    users = heroku.get_collaborators(app).body
     users = users.map { |user| ensure_role(user) }
     write_json(users, "user_list")
   end
 
   def add
-    Heroku::Auth.api.post_collaborator(app, email)
+    heroku.post_collaborator(app, email)
     write_string("Added user with email \"#{email}\"")
   end
 
   def remove
-    Heroku::Auth.api.delete_collaborator(app, email)
+    heroku.delete_collaborator(app, email)
     write_string("Removed user with email \"#{email}\"")
   end
 

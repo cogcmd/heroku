@@ -17,22 +17,22 @@ class CogCmd::Heroku::Config < Cog::Command
   end
 
   def list
-    config = Heroku::Auth.api.get_config_vars(app).body
+    config = heroku.get_config_vars(app).body
     config = config.map { |key, value| {key: key, value: value} }
     write_json(config, "config_list")
   end
 
   def set
     new_config = config_pairs.map { |config| config.split("=", 2) }.to_h
-    old_config = Heroku::Auth.api.get_config_vars(app).body
+    old_config = heroku.get_config_vars(app).body
     config = old_config.merge(new_config)
-    Heroku::Auth.api.put_config_vars(app, config)
+    heroku.put_config_vars(app, config)
     write_string("Set environment variables and restarted app")
   end
 
   def unset
     config_keys.each do |key|
-      Heroku::Auth.api.delete_config_var(app, key)
+      heroku.delete_config_var(app, key)
     end
 
     write_string("Unset environment variables and restarted app")
