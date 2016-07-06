@@ -1,10 +1,11 @@
 require "cog/command"
 require "heroku/auth"
+require_relative "helpers"
 
 class CogCmd::Heroku::Ps < Cog::Command
-  def run_command
-    subcommand = request.args.first
+  include CogCmd::Heroku::Helpers
 
+  def run_command
     case subcommand
     when "list", nil
       list
@@ -17,42 +18,38 @@ class CogCmd::Heroku::Ps < Cog::Command
 
   def list
     ps = Heroku::Auth.api.get_ps(app).body
-    render(ps)
+    write_json(ps)
   end
 
   # TODO: Support formation. See heroku CLI for example.
   #   https://github.com/heroku/heroku/blob/master/lib/heroku/command/ps.rb
   def scale
-    ps = request.args[1..-1].map do |ps|
+    ps = ps_scale_pairs.map do |ps|
       type, qty = ps.split("=", 2)
       Heroku::Auth.api.post_ps_scale(app, type, qty)
       "Scaled process type \"#{type}\" to #{qty} processes"
     end
 
-    info(ps)
+    write_string(ps)
   end
 
   def restart
-    if ps = request.args[1]
+    if ps
       Heroku::Auth.api.post_ps_restart(app, {ps: ps})
-      info("Restarted process \"#{ps}\"")
+      write_string("Restarted process \"#{ps}\"")
     else
       Heroku::Auth.api.post_ps_restart(app, {})
-      info("Restarted all processes")
+      write_string("Restarted all processes")
     end
   end
 
-  def app
-    request.options["app"]
+  private
+
+  def ps_scale_pairs
+    request.args[1..-1]
   end
 
-  def render(content)
-    response.content = content
-    response
-  end
-
-  def info(message)
-    response["body"] = message
-    response
+  def ps
+    request.args[1]
   end
 end

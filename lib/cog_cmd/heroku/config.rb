@@ -1,10 +1,11 @@
 require "cog/command"
 require "heroku/auth"
+require_relative "helpers"
 
 class CogCmd::Heroku::Config < Cog::Command
-  def run_command
-    subcommand = request.args.first
+  include CogCmd::Heroku::Helpers
 
+  def run_command
     case subcommand
     when "list", nil
       list
@@ -17,37 +18,33 @@ class CogCmd::Heroku::Config < Cog::Command
 
   def list
     config = Heroku::Auth.api.get_config_vars(app).body
-    config = config.map { |key, value| {"key" => key, "value" => value} }
-    render(config)
+    config = config.map { |key, value| {key: key, value: value} }
+    write_json(config)
   end
 
   def set
-    new_config = request.args[1..-1].map { |config| config.split("=", 2) }.to_h
-    config = Heroku::Auth.api.get_config_vars(app).body
-    config = config.merge(new_config)
+    new_config = config_pairs.map { |config| config.split("=", 2) }.to_h
+    old_config = Heroku::Auth.api.get_config_vars(app).body
+    config = old_config.merge(new_config)
     Heroku::Auth.api.put_config_vars(app, config)
-    render("Set environment variables and restarted app")
+    write_string("Set environment variables and restarted app")
   end
 
   def unset
-    request.args[1..-1].each do |key|
+    config_keys.each do |key|
       Heroku::Auth.api.delete_config_var(app, key)
     end
 
-    render("Unset environment variables and restarted app")
+    write_string("Unset environment variables and restarted app")
   end
 
-  def app
-    request.options["app"]
+  private
+
+  def config_pairs
+    request.args[1..-1]
   end
 
-  def render(content)
-    response.content = content
-    response
-  end
-
-  def error(message)
-    response["body"] = message
-    response
+  def config_keys
+    request.args[1..-1]
   end
 end

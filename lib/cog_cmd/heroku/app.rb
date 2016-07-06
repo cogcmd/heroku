@@ -1,10 +1,11 @@
 require "cog/command"
 require "heroku/auth"
+require_relative "helpers"
 
 class CogCmd::Heroku::App < Cog::Command
-  def run_command
-    subcommand = request.args.first
+  include CogCmd::Heroku::Helpers
 
+  def run_command
     case subcommand
     when "list", nil
       list
@@ -15,25 +16,14 @@ class CogCmd::Heroku::App < Cog::Command
 
   def list
     apps = Heroku::Auth.api.get_apps.body
-    render(apps)
+    write_json(apps)
   end
 
   def info
-    return error("You must pass an app of which to show the details") if request.args.length < 2
+    return write_string("You must pass an app of which to show the details") unless app_name
 
-    app_name = request.args[1]
     apps = Heroku::Auth.api.get_apps.body
     app = apps.find { |app| app["name"] == app_name }
-    render(app)
-  end
-
-  def render(content)
-    response.content = content
-    response
-  end
-
-  def error(message)
-    response["body"] = message
-    response
+    write_json(app)
   end
 end

@@ -1,10 +1,11 @@
 require "cog/command"
 require "heroku/auth"
+require_relative "helpers"
 
 class CogCmd::Heroku::User < Cog::Command
-  def run_command
-    subcommand = request.args.first
+  include CogCmd::Heroku::Helpers
 
+  def run_command
     case subcommand
     when "list", nil
       list
@@ -17,32 +18,22 @@ class CogCmd::Heroku::User < Cog::Command
 
   def list
     users = Heroku::Auth.api.get_collaborators(app).body
-    render(users)
+    write_json(users)
   end
 
   def add
-    email = request.args[1]
     Heroku::Auth.api.post_collaborator(app, email)
-    output("Added user with email \"#{email}\"")
+    write_string("Added user with email \"#{email}\"")
   end
 
   def remove
-    email = request.args[1]
     Heroku::Auth.api.delete_collaborator(app, email)
-    output("Removed user with email \"#{email}\"")
+    write_string("Removed user with email \"#{email}\"")
   end
 
-  def app
-    request.options["app"]
-  end
+  private
 
-  def render(content)
-    response.content = content
-    response
-  end
-
-  def output(message)
-    response["body"] = message
-    response
+  def email
+    request.args[1]
   end
 end

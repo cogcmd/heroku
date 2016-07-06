@@ -1,10 +1,11 @@
 require "cog/command"
 require "heroku/auth"
+require_relative "helpers"
 
 class CogCmd::Heroku::Release < Cog::Command
-  def run_command
-    subcommand = request.args.first
+  include CogCmd::Heroku::Helpers
 
+  def run_command
     case subcommand
     when "list", nil
       list
@@ -17,32 +18,22 @@ class CogCmd::Heroku::Release < Cog::Command
 
   def list
     releases = Heroku::Auth.api.get_releases(app).body
-    render(releases)
+    write_json(releases)
   end
 
   def info
-    release_version = request.args[1]
     release = Heroku::Auth.api.get_release(app, release_version).body
-    render(release)
+    write_json(release)
   end
 
   def rollback
-    release_version = request.args[1]
     release = Heroku::Auth.api.post_release(app, release_version).body
-    output("Rollback back to release \"#{release_version}\"")
+    write_string("Rollback back to release \"#{release_version}\"")
   end
 
-  def app
-    request.options["app"]
-  end
+  private
 
-  def render(content)
-    response.content = content
-    response
-  end
-
-  def output(message)
-    response["body"] = message
-    response
+  def release_version
+    request.args[1]
   end
 end
