@@ -28,3 +28,17 @@ commands:
       app:
         type: string
         required: true
+  ps:
+    executable: /Users/vanstee/Code/cogcmd/heroku/cog-command
+    description: List and modify processes of an app
+    documentation: |
+      heroku:ps [--app app]
+      heroku:ps list [--app app] - List all running processes
+      heroku:ps scale [--app app] - Change number of running processes
+      heroku:ps restart [--app app] - Restart processes
+    rules:
+      - allow
+    options:
+      app:
+        type: string
+        required: true

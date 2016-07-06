@@ -55,7 +55,7 @@ Workers:       0
 SLACK_API_TOKEN: xoxob-1982oiajfwoiq2u8-q23iohfahfq0-2fhaefha4f23ou
 DATABASE_URL:    postgres://admin:password@localhost:5432/flywheel_prod
 
-@vanstee: !heroku:config --app flywheel-prod set MIX_ENV=prod
+@vanstee: !heroku:config --app flywheel-prod set "MIX_ENV=prod"
 @cog: Set config MIX_ENV=prod
 
 @vanstee: !heroku:config --app flywheel-prod unset MIX_ENV
