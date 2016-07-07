@@ -4,9 +4,12 @@ cog_bundle_version: 3
 name: heroku
 version: 0.0.1
 description: Interact with heroku
+docker:
+  image: cogcmd/heroku
+  tag: 0.0.1
 commands:
   app:
-    executable: /Users/vanstee/Code/cogcmd/heroku/cog-command
+    executable: /home/bundle/cog-command
     description: List and display info about apps
     documentation: |
       heroku:app
@@ -15,7 +18,7 @@ commands:
     rules:
       - allow
   config:
-    executable: /Users/vanstee/Code/cogcmd/heroku/cog-command
+    executable: /home/bundle/cog-command
     description: List and modify environment variables for an app
     documentation: |
       heroku:config [--app app]
@@ -29,7 +32,7 @@ commands:
         type: string
         required: true
   ps:
-    executable: /Users/vanstee/Code/cogcmd/heroku/cog-command
+    executable: /home/bundle/cog-command
     description: List and modify processes of an app
     documentation: |
       heroku:ps [--app app]
@@ -43,7 +46,7 @@ commands:
         type: string
         required: true
   release:
-    executable: /Users/vanstee/Code/cogcmd/heroku/cog-command
+    executable: /home/bundle/cog-command
     description: List and rollback to older releases
     documentation: |
       heroku:release
@@ -57,7 +60,7 @@ commands:
         type: string
         required: true
   user:
-    executable: /Users/vanstee/Code/cogcmd/heroku/cog-command
+    executable: /home/bundle/cog-command
     description: List and rollback to older releases
     documentation: |
       heroku:user
