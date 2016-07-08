@@ -7,6 +7,10 @@ description: Interact with heroku
 docker:
   image: cogcmd/heroku
   tag: 0.0.1
+permissions:
+  - heroku:read
+  - heroku:write
+  - heroku:admin
 commands:
   app:
     executable: /home/bundle/cog-command
@@ -16,7 +20,7 @@ commands:
       heroku:app list - List all apps
       heroku:app info <app> - Display details about an app
     rules:
-      - allow
+      - must have heroku:read
   config:
     executable: /home/bundle/cog-command
     description: List and modify environment variables for an app
@@ -26,7 +30,10 @@ commands:
       heroku:config set <name=value> [--app app] - Set an environment variable
       heroku:config unset <name> [--app app] - Unset an environment variable
     rules:
-      - allow
+      - must have heroku:admin
+      - must have heroku:read
+      - when arg[0] == 'set' must have heroku:write
+      - when arg[0] == 'unset' must have heroku:write
     options:
       app:
         type: string
@@ -40,7 +47,9 @@ commands:
       heroku:ps scale [--app app] - Change number of running processes
       heroku:ps restart [--app app] - Restart processes
     rules:
-      - allow
+      - must have heroku:read
+      - when arg[0] == 'scale' must have heroku:write
+      - when arg[0] == 'restart' must have heroku:write
     options:
       app:
         type: string
@@ -54,7 +63,8 @@ commands:
       heroku:release info [--app app] - Display details about a release
       heroku:release rollback [--app app] - Rollback the app to a previous release
     rules:
-      - allow
+      - must have heroku:read
+      - when arg[0] == 'rollback' must have heroku:write
     options:
       app:
         type: string
@@ -68,7 +78,9 @@ commands:
       heroku:user add [--app app] - Add user by email
       heroku:user remove [--app app] - Remove user by email
     rules:
-      - allow
+      - must have heroku:read
+      - when arg[0] = 'add' must have heroku:write
+      - when arg[0] = 'remove' must have heroku:write
     options:
       app:
         type: string
