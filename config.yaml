@@ -32,8 +32,8 @@ commands:
     rules:
       - must have heroku:admin
       - must have heroku:read
-      - when arg[0] == 'set' must have heroku:write
-      - when arg[0] == 'unset' must have heroku:write
+      - with arg[0] == 'set' must have heroku:write
+      - with arg[0] == 'unset' must have heroku:write
     options:
       app:
         type: string
@@ -48,8 +48,8 @@ commands:
       heroku:ps restart [--app app] - Restart processes
     rules:
       - must have heroku:read
-      - when arg[0] == 'scale' must have heroku:write
-      - when arg[0] == 'restart' must have heroku:write
+      - with arg[0] == 'scale' must have heroku:write
+      - with arg[0] == 'restart' must have heroku:write
     options:
       app:
         type: string
@@ -64,7 +64,7 @@ commands:
       heroku:release rollback [--app app] - Rollback the app to a previous release
     rules:
       - must have heroku:read
-      - when arg[0] == 'rollback' must have heroku:write
+      - with arg[0] == 'rollback' must have heroku:write
     options:
       app:
         type: string
@@ -79,8 +79,8 @@ commands:
       heroku:user remove [--app app] - Remove user by email
     rules:
       - must have heroku:read
-      - when arg[0] = 'add' must have heroku:write
-      - when arg[0] = 'remove' must have heroku:write
+      - with arg[0] == 'add' must have heroku:write
+      - with arg[0] == 'remove' must have heroku:write
     options:
       app:
         type: string
