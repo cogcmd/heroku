@@ -2,7 +2,7 @@
 cog_bundle_version: 4
 
 name: heroku
-version: 0.0.2
+version: 0.0.3
 description: Manage heroku apps and organizations
 long_description: |
   This bundle provides functionality similar to the heroku toolbelt. In fact,
@@ -16,7 +16,7 @@ author: Patrick Van Stee <patrick@operable.io>
 homepage: https://github.com/cogcmd/heroku
 docker:
   image: cogcmd/heroku
-  tag: 0.0.1
+  tag: 0.0.3
 permissions:
   - heroku:read
   - heroku:write
@@ -153,49 +153,80 @@ commands:
         required: true
 templates:
   app_list:
-    slack: "{{name}} - {{owner_email}}"
-    hipchat: "{{name}} - {{owner_email}}"
+    body: |-
+      | Name | Owner |
+      | ---- | ----- |
+      ~each var=$results~
+      | ~$item.name~ | ~$item.owner_email~ |
+      ~end~
   app_info:
-    slack: |
-      Dynos: {{dynos}}
-      Git URL: {{git_url}}
-      Owner: {{owner_email}}
-      Region: {{region}}
-      Repo Size: {{repo_size}}
-      Slug Size: {{slug_size}}
-      Stack: {{stack}}
-      Web URL: {{web_url}}
-    hipchat: |
-      Dynos: {{dynos}}
-      Git URL: {{git_url}}
-      Owner: {{owner_email}}
-      Region: {{region}}
-      Repo Size: {{repo_size}}
-      Slug Size: {{slug_size}}
-      Stack: {{stack}}
-      Web URL: {{web_url}}
+    body: |-
+      ~if cond=length($results) == 1~
+      ~each var=$results~
+      ```
+      Dynos:     ~$item.dynos~
+      Git URL:   ~$item.git_url~
+      Owner:     ~$item.owner_email~
+      Region:    ~$item.region~
+      Repo Size: ~$item.repo_size~
+      Slug Size: ~$item.slug_size~
+      Stack:     ~$item.stack~
+      Web URL:   ~$item.web_url~
+      ```
+      ~end~
+      ~end~
+      ~if cond=length($results) > 1~
+      | Dynos | Git URL | Web URL |
+      | ----- | ------- | ------- |
+      ~each var=$results~
+      | ~$item.dynos~ | ~$item.git_url~ | ~$item.web_url~ |
+      ~end~
+      ~end~
   config_list:
-    slack: "{{key}}={{value}}"
-    hipchat: "{{key}}={{value}}"
+    body: |
+      | Key | Value |
+      | --- | ----- |
+      ~each var=$results~
+      | ~$item.key~ | ~$item.value~ |
+      ~end~
   ps_list:
-    slack: "{{process}}: {{command}} ({{pretty_state}})"
-    hipchat: "{{process}}: {{command}} ({{pretty_state}})"
+    body: |
+      | Process | Command | State |
+      | ------- | ------- | ----- |
+      ~each var=$results~
+      | ~$item.process~ | ~$item.command~ | ~$item.pretty_state~ |
+      ~end~
   release_list:
-    slack: "{{name}} - {{descr}}"
-    hipchat: "{{name}} - {{descr}}"
+    body: |
+      | Name | Description |
+      | ---- | ----------- |
+      ~each var=$results~
+      | ~$item.name~ | ~$item.descr~ |
+      ~end~
   release_info:
-    slack: |
-      Name: {{name}}
-      Description: {{descr}}
-      Released By: {{user}}
-      Released At: {{created_at}}
-      Commit: {{commit}}
-    hipchat: |
-      Name: {{name}}
-      Description: {{descr}}
-      Released By: {{user}}
-      Released At: {{created_at}}
-      Commit: {{commit}}
+    body: |
+      ~if cond=length($results) == 1~
+      ~each var=$results~
+      ```
+      Name:        ~$item.name~
+      Description: ~$item.descr~
+      Released By: ~$item.user~
+      Released At: ~$item.created_at~
+      Commit:      ~$item.commit~
+      ```
+      ~end~
+      ~end~
+      ~if cond=length($results) > 1~
+      | Name | Description |
+      | ---- | ----------- |
+      ~each var=$results~
+      | ~$item.name~ | ~$item.descr~ |
+      ~end~
+      ~end~
   user_list: 
-    slack: "{{email}} - {{role}}"
-    hipchat: "{{email}} - {{role}}"
+    body: |
+      | Email | Role |
+      | ----- | ---- |
+      ~each var=$results~
+      | ~$item.email~ | ~$item.role~ |
+      ~end~
