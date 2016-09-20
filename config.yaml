@@ -153,49 +153,60 @@ commands:
         required: true
 templates:
   app_list:
-    slack: "{{name}} - {{owner_email}}"
-    hipchat: "{{name}} - {{owner_email}}"
+    body: |-
+      | Name | Owner |
+      | ---- | ----- |
+      ~each var=$results~
+      | ~$item.name~ | ~$item.owner_email~ |
+      ~end~
   app_info:
-    slack: |
-      Dynos: {{dynos}}
-      Git URL: {{git_url}}
-      Owner: {{owner_email}}
-      Region: {{region}}
-      Repo Size: {{repo_size}}
-      Slug Size: {{slug_size}}
-      Stack: {{stack}}
-      Web URL: {{web_url}}
-    hipchat: |
-      Dynos: {{dynos}}
-      Git URL: {{git_url}}
-      Owner: {{owner_email}}
-      Region: {{region}}
-      Repo Size: {{repo_size}}
-      Slug Size: {{slug_size}}
-      Stack: {{stack}}
-      Web URL: {{web_url}}
+    body: |-
+      ```
+      ~each var=$results~
+      Dynos:     ~$item.dynos~
+      Git URL:   ~$item.git_url~
+      Owner:     ~$item.owner_email~
+      Region:    ~$item.region~
+      Repo Size: ~$item.repo_size~
+      Slug Size: ~$item.slug_size~
+      Stack:     ~$item.stack~
+      Web URL:   ~$item.web_url~
+      ~end~```
   config_list:
-    slack: "{{key}}={{value}}"
-    hipchat: "{{key}}={{value}}"
+    body: |
+      | Key | Value |
+      | --- | ----- |
+      ~each var=$results~
+      | ~$item.key~ | ~$item.value~ |
+      ~end~
   ps_list:
-    slack: "{{process}}: {{command}} ({{pretty_state}})"
-    hipchat: "{{process}}: {{command}} ({{pretty_state}})"
+    body: |
+      | Process | Command | State |
+      | ------- | ------- | ----- |
+      ~each var=$results~
+      | ~$item.process~ | ~$item.command~ | ~$item.pretty_state~ |
+      ~end~
   release_list:
-    slack: "{{name}} - {{descr}}"
-    hipchat: "{{name}} - {{descr}}"
+    body: |
+      | Name | Description |
+      | ---- | ----------- |
+      ~each var=$results~
+      | ~$item.name~ | ~$item.descr~ |
+      ~end~
   release_info:
-    slack: |
-      Name: {{name}}
-      Description: {{descr}}
-      Released By: {{user}}
-      Released At: {{created_at}}
-      Commit: {{commit}}
-    hipchat: |
-      Name: {{name}}
-      Description: {{descr}}
-      Released By: {{user}}
-      Released At: {{created_at}}
-      Commit: {{commit}}
+    body: |
+      ```
+      ~each var=$results~
+      Name:        ~$item.name~
+      Description: ~$item.descr~
+      Released By: ~$item.user~
+      Released At: ~$item.created_at~
+      Commit:      ~$item.commit~
+      ~end~```
   user_list: 
-    slack: "{{email}} - {{role}}"
-    hipchat: "{{email}} - {{role}}"
+    body: |
+      | Email | Role |
+      | ----- | ---- |
+      ~each var=$results~
+      | ~$item.email~ | ~$item.role~ |
+      ~end~
