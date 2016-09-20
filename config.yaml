@@ -161,8 +161,9 @@ templates:
       ~end~
   app_info:
     body: |-
-      ```
+      ~if cond=length($results) == 1~
       ~each var=$results~
+      ```
       Dynos:     ~$item.dynos~
       Git URL:   ~$item.git_url~
       Owner:     ~$item.owner_email~
@@ -171,7 +172,16 @@ templates:
       Slug Size: ~$item.slug_size~
       Stack:     ~$item.stack~
       Web URL:   ~$item.web_url~
-      ~end~```
+      ```
+      ~end~
+      ~end~
+      ~if cond=length($results) > 1~
+      | Dynos | Git URL | Web URL |
+      | ----- | ------- | ------- |
+      ~each var=$results~
+      | ~$item.dynos~ | ~$item.git_url~ | ~$item.web_url~ |
+      ~end~
+      ~end~
   config_list:
     body: |
       | Key | Value |
@@ -195,14 +205,24 @@ templates:
       ~end~
   release_info:
     body: |
-      ```
+      ~if cond=length($results) == 1~
       ~each var=$results~
+      ```
       Name:        ~$item.name~
       Description: ~$item.descr~
       Released By: ~$item.user~
       Released At: ~$item.created_at~
       Commit:      ~$item.commit~
-      ~end~```
+      ```
+      ~end~
+      ~end~
+      ~if cond=length($results) > 1~
+      | Name | Description |
+      | ---- | ----------- |
+      ~each var=$results~
+      | ~$item.name~ | ~$item.descr~ |
+      ~end~
+      ~end~
   user_list: 
     body: |
       | Email | Role |
