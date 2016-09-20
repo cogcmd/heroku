@@ -2,7 +2,7 @@
 cog_bundle_version: 4
 
 name: heroku
-version: 0.0.2
+version: 0.0.3
 description: Manage heroku apps and organizations
 long_description: |
   This bundle provides functionality similar to the heroku toolbelt. In fact,
@@ -16,7 +16,7 @@ author: Patrick Van Stee <patrick@operable.io>
 homepage: https://github.com/cogcmd/heroku
 docker:
   image: cogcmd/heroku
-  tag: 0.0.1
+  tag: 0.0.3
 permissions:
   - heroku:read
   - heroku:write
